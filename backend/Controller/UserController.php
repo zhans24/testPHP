@@ -63,7 +63,7 @@ class UserController implements ControllerInterface
         $user = new User(
             $data['first_name'],
             $data['last_name'],
-            $email, // Используем переданный email
+            $email,
             $data['company_name'] ?? null,
             $data['position'] ?? null,
             $data['phones'] ?? []

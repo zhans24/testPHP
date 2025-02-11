@@ -24,7 +24,6 @@ $users = array_slice($users, ($page - 1) * $perPage, $perPage);
 <h2>Client Accounts</h2>
 <button class="btn btn-primary mb-3" onclick="showAddUserForm()">Add Account</button>
 
-<!-- User Table -->
 <table class="table table-bordered">
     <thead>
     <tr>
@@ -33,6 +32,7 @@ $users = array_slice($users, ($page - 1) * $perPage, $perPage);
         <th>Email</th>
         <th>Company</th>
         <th>Position</th>
+        <th>Phone</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -44,6 +44,7 @@ $users = array_slice($users, ($page - 1) * $perPage, $perPage);
             <td><?= htmlspecialchars($user['email']) ?></td>
             <td><?= htmlspecialchars($user['company_name']) ?></td>
             <td><?= htmlspecialchars($user['position']) ?></td>
+
             <td>
                 <button class="btn btn-warning btn-sm" onclick="editUser('<?= $user['email'] ?>')">Edit</button>
                 <button class="btn btn-danger btn-sm" onclick="deleteUser('<?= $user['email'] ?>')">Delete</button>
@@ -53,7 +54,7 @@ $users = array_slice($users, ($page - 1) * $perPage, $perPage);
     </tbody>
 </table>
 
-<!-- Pagination -->
+<!-- Пагинация -->
 <nav>
     <ul class="pagination">
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
@@ -64,7 +65,6 @@ $users = array_slice($users, ($page - 1) * $perPage, $perPage);
     </ul>
 </nav>
 
-<!-- User Form Modal -->
 <div id="userForm" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -74,14 +74,30 @@ $users = array_slice($users, ($page - 1) * $perPage, $perPage);
             </div>
             <div class="modal-body">
                 <input type="hidden" id="editEmail">
-                <input type="text" id="firstName" class="form-control mb-2" placeholder="First Name">
-                <input type="text" id="lastName" class="form-control mb-2" placeholder="Last Name">
-                <input type="email" id="email" class="form-control mb-2" placeholder="Email">
-                <input type="text" id="company" class="form-control mb-2" placeholder="Company (Optional)">
-                <input type="text" id="position" class="form-control mb-2" placeholder="Position (Optional)">
-                <input type="text" id="phone1" class="form-control mb-2" placeholder="Phone 1 ">
-                <input type="text" id="phone2" class="form-control mb-2" placeholder="Phone 2 (Optional)">
-                <input type="text" id="phone3" class="form-control mb-2" placeholder="Phone 3 (Optional)">
+
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" id="firstName" class="form-control mb-2" placeholder="Enter first name" required>
+
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" id="lastName" class="form-control mb-2" placeholder="Enter last name" required>
+
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-control mb-2" placeholder="Enter email" required>
+
+                <label for="company" class="form-label">Company (Optional)</label>
+                <input type="text" id="company" class="form-control mb-2" placeholder="Enter company name">
+
+                <label for="position" class="form-label">Position (Optional)</label>
+                <input type="text" id="position" class="form-control mb-2" placeholder="Enter position">
+
+                <label for="phone1" class="form-label">Phone 1</label>
+                <input type="text" id="phone1" class="form-control mb-2" placeholder="Enter primary phone number" required>
+
+                <label for="phone2" class="form-label">Phone 2 (Optional)</label>
+                <input type="text" id="phone2" class="form-control mb-2" placeholder="Enter secondary phone number">
+
+                <label for="phone3" class="form-label">Phone 3 (Optional)</label>
+                <input type="text" id="phone3" class="form-control mb-2" placeholder="Enter additional phone number">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="saveUser()">Save</button>
@@ -90,6 +106,9 @@ $users = array_slice($users, ($page - 1) * $perPage, $perPage);
         </div>
     </div>
 </div>
+
+
+
 <script src="script.js"></script>
 </body>
 </html>

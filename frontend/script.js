@@ -1,5 +1,6 @@
 function showAddUserForm() {
     document.getElementById('editEmail').value = '';
+    document.getElementById('email').type='text'
     document.getElementById('userForm').style.display = 'block';
 }
 
@@ -15,7 +16,7 @@ function editUser(email) {
             document.getElementById('editEmail').value = user.email;
             document.getElementById('firstName').value = user.first_name;
             document.getElementById('lastName').value = user.last_name;
-            document.getElementById('email').value = user.email;
+            document.getElementById('email').type='hidden'
             document.getElementById('company').value = user.company_name || '';
             document.getElementById('position').value = user.position || '';
             document.getElementById('phone1').value = user.phone1 || '';
@@ -37,7 +38,7 @@ function saveUser() {
             document.getElementById('phone1').value,
             document.getElementById('phone2').value,
             document.getElementById('phone3').value
-        ].filter(phone => phone) // Удаляем пустые телефоны
+        ].filter(phone => phone)
     };
 
     let email = document.getElementById('editEmail').value;
@@ -58,15 +59,18 @@ function saveUser() {
 }
 
 function deleteUser(email) {
-    if (confirm('Are you sure?')) {
-        fetch(`http://localhost:8000/backend/router.php?email=${email}`, { method: 'DELETE' })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(error => { throw new Error(error.error); });
-                }
-                return response.json();
-            })
-            .then(() => location.reload())
-            .catch(error => alert(error.message));
-    }
+    fetch(`http://localhost:8000/backend/router.php?email=${email}`, { method: 'DELETE' })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => { throw new Error(error.error); });
+            }
+            return response.json();
+        })
+        .then(() => location.reload())
+        .catch(error => alert(error.message));
+
+}
+
+function hideUserForm(){
+    document.getElementById('userForm').style.display = 'none';
 }

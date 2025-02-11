@@ -17,38 +17,30 @@ if ($method === 'OPTIONS') {
     exit;
 }
 
+$data = json_decode(file_get_contents("php://input"), true);
+
 switch ($method) {
     case 'GET':
         if (isset($_GET['email'])) {
-            $userController->getUserByEmail($_GET['email']);
+            $userController->find($_GET['email']);
         } else {
-            $userController->getUsers();
+            $userController->show();
         }
         break;
 
     case 'POST':
-        $userController->addUser();
+        $userController->save($data);
         break;
 
     case 'PUT':
-        if (isset($_GET['email'])) {
-            $userController->updateUser($_GET['email']);
-        } else {
-            http_response_code(400);
-            echo json_encode(["error" => "Email parameter is required"]);
-        }
+        $userController->update($data,$_GET['email']);
         break;
 
     case 'DELETE':
-        if (isset($_GET['email'])) {
-            $userController->deleteUser($_GET['email']);
-        } else {
-            http_response_code(400);
-            echo json_encode(["error" => "Email parameter is required"]);
-        }
+        $userController->delete($_GET['email']);
         break;
 
     default:
         http_response_code(405);
-        echo json_encode(["error" => "Method not allowed"]);
+        echo json_encode(["ошибка" => "Нет разрешении для этого метода"]);
 }
