@@ -27,7 +27,6 @@ function editUser(email) {
 }
 
 function saveUser() {
-    console.log("GET")
     let data = {
         first_name: document.getElementById('firstName').value,
         last_name: document.getElementById('lastName').value,

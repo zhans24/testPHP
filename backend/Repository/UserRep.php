@@ -41,8 +41,8 @@ class UserRep
 
     // Добавить
     public function addUser(User $user) {
-        $sql = "INSERT INTO users (first_name, last_name, email, company_name, position) 
-            VALUES (:first_name, :last_name, :email, :password, :company_name, :position)";
+        $sql = "INSERT INTO users (first_name, last_name, email, company_name, position,phone1,phone2,phone3) 
+            VALUES (:first_name, :last_name, :email, :company_name, :position,:phone1,:phone2,:phone3);";
         $stmt = $this->db->prepare($sql);
 
         $firstName = $user->getFirstName();
@@ -51,11 +51,18 @@ class UserRep
         $companyName = $user->getCompanyName();
         $position = $user->getPosition();
 
+        $phone1=$user->getPhones()[0] ?? null;
+        $phone2=$user->getPhones()[1] ?? null;
+        $phone3=$user->getPhones()[2] ?? null;
+
         $stmt->bindParam(':first_name', $firstName);
         $stmt->bindParam(':last_name', $lastName);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':company_name', $companyName);
         $stmt->bindParam(':position', $position);
+        $stmt->bindParam(':phone1', $phone1);
+        $stmt->bindParam(':phone2', $phone2);
+        $stmt->bindParam(':phone3', $phone3);
 
         return $stmt->execute();
     }

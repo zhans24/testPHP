@@ -79,6 +79,9 @@ $users = array_slice($users, ($page - 1) * $perPage, $perPage);
                 <input type="email" id="email" class="form-control mb-2" placeholder="Email">
                 <input type="text" id="company" class="form-control mb-2" placeholder="Company (Optional)">
                 <input type="text" id="position" class="form-control mb-2" placeholder="Position (Optional)">
+                <input type="text" id="phone1" class="form-control mb-2" placeholder="Phone 1 ">
+                <input type="text" id="phone2" class="form-control mb-2" placeholder="Phone 2 (Optional)">
+                <input type="text" id="phone3" class="form-control mb-2" placeholder="Phone 3 (Optional)">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="saveUser()">Save</button>
