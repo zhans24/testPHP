@@ -18,14 +18,11 @@ class Database
         $dbname = "test";
 
         try {
-            $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4"; // ✅ Добавлен `charset=utf8mb4`
+            $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4"; 
             $this->conn = new PDO($dsn, $user, $pass, [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // ✅ Включаем ошибки
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, // ✅ Устанавливаем режим выборки
-                PDO::ATTR_EMULATE_PREPARES => false, // ✅ Защита от SQL-инъекций
-            ]);
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION] );
         } catch (PDOException $e) {
-            die("Ошибка подключения: " . $e->getMessage()); // ✅ Сообщение об ошибке
+            die("Ошибка подключения: " . $e->getMessage()); 
         }
     }
 
