@@ -1,13 +1,15 @@
 <?php
 
-namespace Repository;
+namespace backend\Repository;
 
-use Database;
+use backend\config\Database;
+use backend\models\User;
 use PDO;
-use User;
 
-require_once 'config/Database.php';
-require_once 'models/User.php';
+require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../models/User.php';
+
+
 
 class UserRep
 {
@@ -38,50 +40,42 @@ class UserRep
     }
 
     // Добавить
-    public function addUser(User $user)
-    {
-        $sql = "INSERT INTO users 
-                (first_name, last_name, email, company_name, position, phone1, phone2, phone3) 
-                VALUES (:first_name, :last_name, :email, :company_name, :position, :phone1, :phone2, :phone3)";
+    public function addUser(User $user) {
+        $sql = "INSERT INTO users (first_name, last_name, email, company_name, position) 
+            VALUES (:first_name, :last_name, :email, :password, :company_name, :position)";
         $stmt = $this->db->prepare($sql);
 
-        $firstname=$user->getFirstName();
-        $lastname=$user->getLastName();
+        $firstName = $user->getFirstName();
+        $lastName = $user->getLastName();
         $email = $user->getEmail();
+        $companyName = $user->getCompanyName();
         $position = $user->getPosition();
 
-        $stmt->bindParam(':first_name', $firstname);
-        $stmt->bindParam(':last_name', $lastname);
-        $stmt->bindParam(':new_email', $email);
-        $stmt->bindParam(':position', $position);
+        $stmt->bindParam(':first_name', $firstName);
+        $stmt->bindParam(':last_name', $lastName);
         $stmt->bindParam(':email', $email);
-
-        $phones = $user->getPhones();
-        $phone1 = $phones[0] ?? null;
-        $phone2 = $phones[1] ?? null;
-        $phone3 = $phones[2] ?? null;
-
-        $stmt->bindParam(':phone1', $phone1);
-        $stmt->bindParam(':phone2', $phone2);
-        $stmt->bindParam(':phone3', $phone3);
+        $stmt->bindParam(':company_name', $companyName);
+        $stmt->bindParam(':position', $position);
 
         return $stmt->execute();
     }
 
+
     // Изменить данные юзера по почте
     public function updateUser(User $user, $email)
     {
-        $sql = "UPDATE users SET first_name = :first_name, last_name = :last_name, email = :new_email, position = :position, phone1 = :phone1, phone2 = :phone2, phone3 = :phone3 WHERE email = :email";
+        $sql = "UPDATE users 
+SET first_name = :first_name, last_name = :last_name, email = :new_email, position = :position, phone1 = :phone1, phone2 = :phone2, phone3 = :phone3 WHERE email =$email";
         $stmt = $this->db->prepare($sql);
 
         $firstname=$user->getFirstName();
         $lastname=$user->getLastName();
-        $email = $user->getEmail();
+        $newEmail = $user->getEmail();
         $position = $user->getPosition();
 
         $stmt->bindParam(':first_name', $firstname);
         $stmt->bindParam(':last_name', $lastname);
-        $stmt->bindParam(':new_email', $email);
+        $stmt->bindParam(':new_email', $newEmail);
         $stmt->bindParam(':position', $position);
         $stmt->bindParam(':email', $email);
 
