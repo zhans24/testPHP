@@ -44,7 +44,23 @@ $users = array_slice($users, ($page - 1) * $perPage, $perPage);
             <td><?= htmlspecialchars($user['email']) ?></td>
             <td><?= htmlspecialchars($user['company_name']) ?></td>
             <td><?= htmlspecialchars($user['position']) ?></td>
-
+            <td><table><tr>
+                    <td style="padding-right: 10px">
+                        <ul>
+                            <?php if (!empty($user['phone1'])){
+                                echo "<li>" .htmlspecialchars($user['phone1']) . '</li>';
+                            }
+                            if (!empty($user['phone2'])){
+                                echo "<li>" .htmlspecialchars($user['phone2']) . '</li>';
+                            }
+                            if (!empty($user['phone3'])){
+                                echo "<li>" .htmlspecialchars($user['phone3']) . '</li>';
+                            }
+                            ?>
+                        </ul>
+                    </td>
+                    </tr>
+                </table></td>
             <td>
                 <button class="btn btn-warning btn-sm" onclick="editUser('<?= $user['email'] ?>')">Edit</button>
                 <button class="btn btn-danger btn-sm" onclick="deleteUser('<?= $user['email'] ?>')">Delete</button>

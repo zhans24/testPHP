@@ -72,12 +72,11 @@ class UserRep
     public function updateUser(User $user, $email)
     {
         $sql = "UPDATE users 
-SET first_name = :first_name, last_name = :last_name,company_name=:company_name, position = :position, phone1 = :phone1, phone2 = :phone2, phone3 = :phone3 WHERE email =$email";
+SET first_name = :first_name, last_name = :last_name,company_name=:company_name, position = :position, phone1 = :phone1, phone2 = :phone2, phone3 = :phone3 WHERE email =:email";
         $stmt = $this->db->prepare($sql);
 
         $firstname=$user->getFirstName();
         $lastname=$user->getLastName();
-        $newEmail = $user->getEmail();
         $companyName = $user->getCompanyName();
         $position = $user->getPosition();
 
@@ -85,12 +84,11 @@ SET first_name = :first_name, last_name = :last_name,company_name=:company_name,
         $stmt->bindParam(':last_name', $lastname);
         $stmt->bindParam(':company_name', $companyName);
         $stmt->bindParam(':position', $position);
-
+        $stmt->bindParam(':email', $email);
         $phones = $user->getPhones();
         $phone1 = $phones[0] ?? null;
         $phone2 = $phones[1] ?? null;
         $phone3 = $phones[2] ?? null;
-
         $stmt->bindParam(':phone1', $phone1);
         $stmt->bindParam(':phone2', $phone2);
         $stmt->bindParam(':phone3', $phone3);
