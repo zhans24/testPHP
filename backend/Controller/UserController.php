@@ -4,39 +4,42 @@ namespace backend\Controller;
 
 use backend\Repository\UserRep;
 use backend\models\User;
+use backend\Controller\interface\ControllerInterface;
 
 require_once __DIR__ . '/../Repository/UserRep.php';
 require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/interface/ControllerInterface.php';
 
-class UserController {
+class UserController implements ControllerInterface
+{
     private $userRepo;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->userRepo = new UserRep();
     }
 
-    public function getUsers() {
+    // Получить всех пользователей
+    public function show()
+    {
         echo json_encode($this->userRepo->getUsers());
     }
 
-    public function getUserByEmail($email) {
+    // Найти пользователя по email
+    public function find($email)
+    {
         $user = $this->userRepo->getUserByEmail($email);
         if ($user) {
             echo json_encode($user);
         } else {
             http_response_code(404);
-            echo json_encode(["error" => "User not found"]);
+            echo json_encode(["ошибка" => "Нет такого юзера"]);
         }
     }
 
-    public function addUser() {
-        $data = json_decode(file_get_contents("php://input"), true);
-        if (!isset($data['first_name'], $data['last_name'], $data['email'])) {
-            http_response_code(400);
-            echo json_encode(["error" => "Missing required fields"]);
-            return;
-        }
-
+    // Добавить нового пользователя
+    public function save($data)
+    {
         $user = new User(
             $data['first_name'],
             $data['last_name'],
@@ -47,44 +50,41 @@ class UserController {
         );
 
         if ($this->userRepo->addUser($user)) {
-            echo json_encode(["message" => "User added successfully"]);
+            echo json_encode(["message" => "Юзер добавлен"]);
         } else {
             http_response_code(500);
-            echo json_encode(["error" => "Failed to add user"]);
+            echo json_encode(["ошибка" => "Не добавлен юзер"]);
         }
     }
 
-    public function updateUser($email) {
-        $data = json_decode(file_get_contents("php://input"), true);
-        if (!isset($data['first_name'], $data['last_name'])) {
-            http_response_code(400);
-            echo json_encode(["error" => "Missing required fields"]);
-            return;
-        }
-
+    // Обновить данные пользователя
+    public function update($data, $email)
+    {
         $user = new User(
             $data['first_name'],
             $data['last_name'],
-            $data['email'],
+            $email, // Используем переданный email
             $data['company_name'] ?? null,
             $data['position'] ?? null,
             $data['phones'] ?? []
         );
 
         if ($this->userRepo->updateUser($user, $email)) {
-            echo json_encode(["message" => "User updated successfully"]);
+            echo json_encode(["message" => "Юзер обновлен"]);
         } else {
             http_response_code(500);
-            echo json_encode(["error" => "Failed to update user"]);
+            echo json_encode(["ошибка" => "Ошибка в обновлении"]);
         }
     }
 
-    public function deleteUser($email) {
+    // Удалить пользователя
+    public function delete($email)
+    {
         if ($this->userRepo->deleteUser($email)) {
-            echo json_encode(["message" => "User deleted successfully"]);
+            echo json_encode(["message" => "Юзер удален"]);
         } else {
             http_response_code(500);
-            echo json_encode(["error" => "Failed to delete user"]);
+            echo json_encode(["ошибка" => "Ошибка в удалении"]);
         }
     }
 }
